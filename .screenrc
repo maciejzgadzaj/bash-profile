@@ -1,0 +1,19 @@
+caption always "%{= bb}%{+b w}%n %h %=%t %c"
+hardstatus alwayslastline "%-Lw%{= BW}%50>%n%f* %t%{-}%+Lw%<"
+
+defscrollback 30000 # Use a 30000-line scrollback buffer
+termcapinfo xterm ti@:te@
+
+# terminfo and termcap for nice 256 color terminal
+# allow bold colors - necessary for some reason
+attrcolor b ".I"
+# tell screen how to set colors. AB = background, AF=foreground
+termcapinfo xterm 'Co#256:AB=\E[48;5;%dm:AF=\E[38;5;%dm'
+termcapinfo urxvt 'Co#256:AB=\E[48;5;%dm:AF=\E[38;5;%dm'
+termcapinfo xterm* be
+# erase background with current bg color
+defbce "on"
+
+# Autodetach session on hangup instead of terminating screen completely
+autodetach on
+
