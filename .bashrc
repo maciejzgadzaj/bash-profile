@@ -42,6 +42,7 @@ shopt -s extglob
 shopt -s histappend histreedit histverify
 
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
+ HISTSIZE=10000
 
 # if readline is being used, bash will not attempt to search the PATH
 # for possible completions when completion is attempted on an empty line
@@ -87,21 +88,19 @@ if [ -n "$force_color_prompt" ]; then
 fi
 
 if [ "$color_prompt" = yes ]; then
-    case $(hostname) in
-        # Red for prod servers
-        gestion-web1 | gestion-m3 | www-white1 | www-node1 | www-ugc1-c | statsugc1 | depot)
-            PS1='${debian_chroot:+($debian_chroot)}\[\033[00;31m\]\u@\h:\[\033[00m\]\[\033[01;31m\]\w\[\033[00;31m\]\$\[\033[00m\] ' ;;
-        # Green for dev & doc servers
-        dev | vwwwugc-dev.dmz.loc | toupri)
-            PS1='${debian_chroot:+($debian_chroot)}\[\033[00;32m\]\u@\h:\[\033[00m\]\[\033[01;32m\]\w\[\033[00;32m\]\$\[\033[00m\] ' ;;
-        # Blue for anything else
-        *)
-            PS1='${debian_chroot:+($debian_chroot)}\[\033[00;34m\]\u@\h:\[\033[00m\]\[\033[01;34m\]\w\[\033[00;34m\]\$\[\033[00m\] ' ;;
-    esac
+    for i in `find ~ -maxdepth 1 -type f -name .bashrc_ps1_\*`; do
+        . $i
+    done
 else
     PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
 fi
 unset color_prompt force_color_prompt
+
+# MySQL prompt
+if [ -x /usr/bin/rlwrap ]; then
+    alias mysql='/usr/bin/rlwrap -a -pGREEN /usr/bin/mysql'
+fi
+export MYSQL_PS1="\u@\h:/\d$ "
 
 # If this is an xterm set the title to user@host:dir
 case "$TERM" in
@@ -118,15 +117,9 @@ export EDITOR=vim
 export LESSCHARSET='latin1'
 
 # Alias definitions.
-if [ -f ~/.bash_aliases ]; then
-    . ~/.bash_aliases
-fi
-if [ -f ~/.bash_aliases_elma ]; then
-    . ~/.bash_aliases_elma
-fi
-if [ -f ~/.bash_aliases_private ]; then
-    . ~/.bash_aliases_private
-fi
+for i in `find ~ -maxdepth 1 -type f -name .bash_aliases\*`; do
+    . $i
+done
 
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
@@ -143,10 +136,7 @@ fi
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
-# For some reason if fucks up completion on www-ugc1-c,
-# so we do not want it there.
-if [[ -f /etc/bash_completion && $(hostname) != "www-ugc1-c" ]]
-then
+if [ -f /etc/bash_completion ]; then
     . /etc/bash_completion
 fi
 
@@ -158,4 +148,3 @@ export LESS_TERMCAP_se=$'\E[0m'          # end standout-mode
 export LESS_TERMCAP_so=$'\E[01;44;33m'   # begin standout-mode - info box
 export LESS_TERMCAP_ue=$'\E[0m'          # end underline
 export LESS_TERMCAP_us=$'\E[01;32m'      # begin underline
-

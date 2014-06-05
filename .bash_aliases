@@ -16,10 +16,6 @@ alias rd='rmdir'
 # Create directory(ies) and go there
 mdcd () { mkdir -p "$1" && cd "$1" ; }
 
-# disk free / usage
-alias df='df -h'
-alias du='du -hs'
-
 # history
 alias h='history'
 alias hg='history | grep -i $1 --color=auto'
@@ -27,6 +23,13 @@ alias hg='history | grep -i $1 --color=auto'
 # processes
 alias ps='ps -ef'
 alias psg='ps -ef | grep $1 --color=auto'
+
+# misc
+if [[ -f /usr/bin/colordiff ]]; then
+    diff () { /usr/bin/diff -rw "$@" | colordiff ; }
+else
+    diff () { /usr/bin/diff -rw "$@" ; }
+fi
 
 # go up in directory structure $1 levels
 .. () {
@@ -43,32 +46,30 @@ alias psg='ps -ef | grep $1 --color=auto'
 }
 
 # file finder
-function ff() { find . -type f -iname '*'$*'*' -ls ; }
-function sff() { sudo find . -type f -iname '*'$*'*' -ls ; }
+ff () { find . -type f -iname '*'$*'*' -ls ; }
+sff () { sudo find . -type f -iname '*'$*'*' -ls ; }
 
 # colorful, recursive grep with line numbers and excluding SVN
-gr () { grep -risn "$1" . --color=always | grep -v '.svn\|.git\|\~' ; }
+grp () { grep -risn "$1" . --color=always | grep -v '.svn\|.git\|\~' ; }
 grl () { grep -risn "$1" . --color=always | grep -v '.svn\|.git' | less -R ; }
+fgr () { find . -type f -not -regex '\(.svn\|.git\)' -and -regex '.*\.\(php\|inc\|module\|install\|class\|pl\|sh\|pm\|conf\|ini\|js\)' 2>/dev/null -exec grep -risnHE "$1" --color=always {} \;; }
+zgr () { find . -name "*.gz" 2>/dev/null -exec zgrep -nHE "$1" --color=always {} \;; }
 
-# grep for gzipped files
-# 1st param: string to look for
-# 2nd param: filename mask (
-fzgrep () {
-    if [ "$2" ]
-    then
-        filemask="$2"
-    else
-        filemask='*.gz'
+find-empty-dirs () {
+  for folder in $(find . -type d); do
+    if [ "`ls $folder | wc -l`" -eq 0 ]; then
+      echo $folder
     fi
-    find . -name "$filemask" -exec sh -c 'zcat $0 | grep -in '$1' --color=always' {} \; -ls
+  done
 }
-alias zgr='fzgrep'
 
 # svn
-st () { svn st -u "$1" ; }
-sd () { svn diff "$1" | colordiff ; }
-sdr () { svn diff -rhead "$1" | colordiff ; }
-sl () { svn log "$1" |more ; }
+st () { svn st -u "$@" ; }
+sd () { svn diff "$@" | colordiff ; }
+sdr () { svn diff -rhead "$@" | colordiff ; }
+sl () { svn log "$@" |less ; }
+sb () { svn blame "$@" |less ; }
+
 # Add all files not yet added to SVN
 svnaddall () { svn st | grep "^?" | awk -F "      " '{print $2}' | xargs svn add ; }
 # Delete all deleted files from SVN
@@ -98,6 +99,23 @@ function svnupall () {
 # Delete all .svn directories starting from current directory
 svnclean () { find . -name '.svn' -exec rm -rf '{}' \; ; }
 
+
+gt () { git status "$@" ; }
+gl () { git lg "$@" ; }
+gb () { git blame "$@" ; }
+ga () { git add "$@" ; }
+gc () { git commit "$@" ; }
+gr () { git fetch origin && git reset --hard origin/$@ ; }
+if [[ -f /usr/bin/colordiff ]]; then
+    gd () { git diff -w "$@" | colordiff ; }
+    gdc () { git diff -w --cached | colordiff ; }
+    gdr () { git diff -w HEAD "$@" | colordiff ; }
+else
+    gd () { git diff -w "$@" ; }
+    gdc () { git diff -w --cached ; }
+    gdr () { git diff -w HEAD "$@" ; }
+fi
+
 # apt-get
 alias agi='sudo apt-get install'
 alias agr='sudo apt-get remove'
@@ -119,4 +137,3 @@ s() {
 alias ftop="watch -d -n 1 'df; ls -FlAS;'"
 alias chmodf='chmod 644 $(find . -type f)'
 alias chmodd='chmod 755 $(find . -type d)'
-
