@@ -101,9 +101,11 @@ svnclean () { find . -name '.svn' -exec rm -rf '{}' \; ; }
 
 
 gt () { git status "$@" ; }
+gs () { git status -uno "$@" ; }
 gl () { git lg "$@" ; }
 gb () { git blame "$@" ; }
 ga () { git add "$@" ; }
+gap () { git add -p "$@" ; }
 gc () { git commit "$@" ; }
 gr () { git fetch origin && git reset --hard origin/$@ ; }
 if [[ -f /usr/bin/colordiff ]]; then
