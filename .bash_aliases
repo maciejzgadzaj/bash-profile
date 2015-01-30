@@ -139,3 +139,8 @@ s() {
 alias ftop="watch -d -n 1 'df; ls -FlAS;'"
 alias chmodf='chmod 644 $(find . -type f)'
 alias chmodd='chmod 755 $(find . -type d)'
+
+if [ -d ~/.composer/vendor/drupal/coder/coder_sniffer/Drupal ]; then
+    alias sniff='phpcs --standard=~/.composer/vendor/drupal/coder/coder_sniffer/Drupal/'
+fi
+
