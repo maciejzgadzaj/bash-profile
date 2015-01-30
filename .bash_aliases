@@ -1,7 +1,7 @@
 
 # listing / displaying
-alias l='ls -al --color=auto'
-alias ll='ls -al --color=always | less -R'
+alias l='ls -alG'
+alias ll='ls -alG | less -R'
 alias tailf='tail -f'
 alias zcatl='zcat $1 | less'
 
