@@ -5,6 +5,9 @@
 # the default umask is set in /etc/login.defs
 #umask 002
 
+# Show unstaged (*) and staged (+) changes next to the branch name.
+export GIT_PS1_SHOWDIRTYSTATE=1
+
 if [ -f ~/.bashrc ]; then
     . ~/.bashrc
 fi
