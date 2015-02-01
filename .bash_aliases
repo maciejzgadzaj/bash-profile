@@ -1,7 +1,12 @@
 
 # listing / displaying
-alias l='ls -alG'
-alias ll='ls -alG | less -R'
+if [[ $(uname) == 'Linux' ]]; then
+    alias l='ls -al --color=always'
+    alias ll='ls -al --color=always | less -R'
+elif [[ $(uname) == 'Darwin' ]]; then
+    alias l='ls -alG'
+    alias ll='ls -alG | less -R'
+fi
 alias tailf='tail -f'
 alias zcatl='zcat $1 | less'
 
@@ -11,7 +16,8 @@ alias mv='mv -i'
 alias rm='rm -i'
 
 # directories
-alias md='mkdir -p'
+alias mkdir='mkdir -pv'
+alias md='mkdir'
 alias rd='rmdir'
 # Create directory(ies) and go there
 mdcd () { mkdir -p "$1" && cd "$1" ; }
@@ -19,17 +25,6 @@ mdcd () { mkdir -p "$1" && cd "$1" ; }
 # history
 alias h='history'
 alias hg='history | grep -i $1 --color=auto'
-
-# processes
-alias ps='ps -ef'
-alias psg='ps -ef | grep $1 --color=auto'
-
-# misc
-if [[ -f /usr/bin/colordiff ]]; then
-    diff () { /usr/bin/diff -rw "$@" | colordiff ; }
-else
-    diff () { /usr/bin/diff -rw "$@" ; }
-fi
 
 # go up in directory structure $1 levels
 .. () {
@@ -55,51 +50,6 @@ grl () { grep -risn "$1" . --color=always | grep -v '.svn\|.git' | less -R ; }
 fgr () { find . -type f -not -regex '\(.svn\|.git\)' -and -regex '.*\.\(php\|inc\|module\|install\|class\|pl\|sh\|pm\|conf\|ini\|js\)' 2>/dev/null -exec grep -risnHE "$1" --color=always {} \;; }
 zgr () { find . -name "*.gz" 2>/dev/null -exec zgrep -nHE "$1" --color=always {} \;; }
 
-find-empty-dirs () {
-  for folder in $(find . -type d); do
-    if [ "`ls $folder | wc -l`" -eq 0 ]; then
-      echo $folder
-    fi
-  done
-}
-
-# svn
-st () { svn st -u "$@" ; }
-sd () { svn diff "$@" | colordiff ; }
-sdr () { svn diff -rhead "$@" | colordiff ; }
-sl () { svn log "$@" |less ; }
-sb () { svn blame "$@" |less ; }
-
-# Add all files not yet added to SVN
-svnaddall () { svn st | grep "^?" | awk -F "      " '{print $2}' | xargs svn add ; }
-# Delete all deleted files from SVN
-svndelall () { svn st | grep "^\!" | awk -F "      " '{print $2}' | xargs svn delete ; }
-# Update all repositories found inside current/specified directory
-function svnupall () {
-    if [ "$1" ]
-    then
-        path="$1"
-    else
-        path='.'
-    fi
-    if [[ -d $path ]]
-    then
-        if [[ -d $path/.svn ]]
-        then
-            echo "Updating $path"
-            svn up $path
-        else
-            for d in $(find $path -maxdepth 1 -type d ! -wholename $path)
-            do
-                svnupall $d
-            done
-        fi
-    fi
-}
-# Delete all .svn directories starting from current directory
-svnclean () { find . -name '.svn' -exec rm -rf '{}' \; ; }
-
-
 gt () { git status "$@" ; }
 gs () { git status -uno "$@" ; }
 gl () { git lg "$@" ; }
@@ -118,14 +68,6 @@ else
     gdr () { git diff -w HEAD "$@" ; }
 fi
 
-# apt-get
-alias agi='sudo apt-get install'
-alias agr='sudo apt-get remove'
-alias agp='sudo apt-get remove --purge'
-alias agu='sudo apt-get update'
-alias agc='sudo apt-get autoclean && sudo apt-get autoremove'
-alias ags='sudo vim /etc/apt/sources.list'
-
 # do sudo, or sudo the last command if no argument given
 s() {
     if [[ $# == 0 ]]; then
@@ -136,9 +78,16 @@ s() {
 }
 
 # misc
+alias diff='colordiff -rw'
+alias wget='wget -c'
+alias df='df -H'
+alias du='du -ch'
+alias c='clear'
+
 alias ftop="watch -d -n 1 'df; ls -FlAS;'"
 alias chmodf='chmod 644 $(find . -type f)'
 alias chmodd='chmod 755 $(find . -type d)'
+
 
 if [ -d ~/.composer/vendor/drupal/coder/coder_sniffer/Drupal ]; then
     alias sniff='phpcs --standard=~/.composer/vendor/drupal/coder/coder_sniffer/Drupal/'
