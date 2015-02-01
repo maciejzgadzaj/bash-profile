@@ -1,0 +1,8 @@
+if [ $(id -u) -eq 0 ]; then
+	# Red everything for root.
+    PS1='${debian_chroot:+($debian_chroot)}\[\033[00;31m\]\u@\h \[\033[01;31m\]\w\[\033[00;31m\] \$\[\033[00m\] '
+else
+	# Gray user@hostname, green directory and yellow git branch.
+    PS1='${debian_chroot:+($debian_chroot)}\[\033[00;90m\]\u@\h \[\033[01;32m\]\w \[\033[00;33m\]$(__git_ps1 "[%s]")\[\033[00;90m\]\$\[\033[00m\] '
+fi
+

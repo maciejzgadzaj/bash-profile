@@ -88,7 +88,7 @@ if [ -n "$force_color_prompt" ]; then
 fi
 
 if [ "$color_prompt" = yes ]; then
-    for i in `find ~ -maxdepth 1 -type f -name .bashrc_ps1_\*`; do
+    for i in `find ~ -maxdepth 1 -type f -name .bashrc_ps1\*`; do
         . $i
     done
 else
