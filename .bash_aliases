@@ -47,7 +47,7 @@ sff () { sudo find . -type f -iname '*'$*'*' -ls ; }
 # colorful, recursive grep with line numbers and excluding SVN
 grp () { grep -risn "$1" . --color=always | grep -v '.svn\|.git\|\~' ; }
 grl () { grep -risn "$1" . --color=always | grep -v '.svn\|.git' | less -R ; }
-fgr () { find . -type f -not -regex '\(.svn\|.git\)' -and -regex '.*\.\(php\|inc\|module\|install\|class\|pl\|sh\|pm\|conf\|ini\|js\)' 2>/dev/null -exec grep -risnHE "$1" --color=always {} \;; }
+fgr () { find . -follow -type f -not -regex '\(.svn\|.git\)' -and -regex '.*\.\(php\|inc\|module\|install\|class\|pl\|sh\|pm\|conf\|ini\|js\)' 2>/dev/null -exec grep -risnHE "$1" --color=always {} \;; }
 zgr () { find . -name "*.gz" 2>/dev/null -exec zgrep -nHE "$1" --color=always {} \;; }
 
 gt () { git status "$@" ; }
