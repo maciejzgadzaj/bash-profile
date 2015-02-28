@@ -51,15 +51,24 @@ fgr () { find . -follow -type f -not -regex '\(.svn\|.git\)' -and -regex '.*\.\(
 zgr () { find . -name "*.gz" 2>/dev/null -exec zgrep -nHE "$1" --color=always {} \;; }
 
 gt () { git status "$@" ; }
-gs () { git status -uno "$@" ; }
-gl () { git lg "$@" ; }
+gti () { git status --ignored "$@" ; }
+gs () { git status -sb "$@" ; }
+gsi () { git status -sb --ignored "$@" ; }
+gl () { git l "$@" ; }
+gll () { git ll "$@" ; }
+glll () { git lll "$@" ; }
 gb () { git blame "$@" ; }
 ga () { git add "$@" ; }
 gap () { git add -p "$@" ; }
 gc () { git commit "$@" ; }
-gr () { git fetch origin && git reset --hard origin/$@ ; }
+gcm () { git commit -m "$@" ; }
+alias gr='[ ! -z `git rev-parse --show-cdup` ] && cd `git rev-parse --show-cdup || pwd`'
+gri () { git rebase -i HEAD~$@ ; }
+gstat () { git shortlog -sne --no-merges ; }
+gstatm () { git shortlog -sne ; }
 if [[ -f /usr/bin/colordiff ]]; then
     gd () { git diff -w "$@" | colordiff ; }
+    gdw () { git diff --color-words -w "$@" ; }
     gdc () { git diff -w --cached | colordiff ; }
     gdr () { git diff -w HEAD "$@" | colordiff ; }
 else
