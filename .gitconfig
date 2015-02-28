@@ -1,0 +1,84 @@
+[include]
+  path = .gitconfig-user
+  path = .gitconfig-github
+[core]
+  # 'autocrlf' is useful for web and doc projects.
+  # This setup should leave you with CRLF endings in Windows checkouts
+  # but LF endings on Mac and Linux systems and in the REPOSITORY.
+  # Do not use it if you need differents line endings in files!
+  autocrlf = input
+  excludesfile = ~/.gitignore_global
+  # 'filemode' is useful when you do not need to change files permissions in repository.
+  # If you need change file mode (+x for example) you must switch it option to true.
+  filemode = false
+  # The command that git will use to paginate output.
+  pager = less -r
+  # Ignore the ctime differences between the index and the working copy.
+  trustctime = false
+  # 'trailing-space' warns about whitespace at the end of a line or at the end of a file
+  # 'space-before-tab' warns when there is a space before a tab used for indentation
+  whitespace = trailing-space,space-before-tab
+[color]
+  branch = auto
+  diff = auto
+  status = auto
+  ui = true
+[color "diff"]
+  meta = green bold
+  frag = magenta bold
+  old = red bold
+  new = blue bold
+  whitespace = red reverse
+[alias]
+  br = branch
+  ci = commit
+  co = checkout
+  df = diff
+  l = log --color --date=iso --no-merges --pretty=format:'%C(red)%h%C(reset)%x09%C(green)%an%C(reset)%x09%C(bold blue)%cd%C(reset)  %s%C(yellow)%d%C(reset)'
+  ll = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%ci) %C(bold blue)<%an>%Creset' --abbrev-commit
+  lll = log --stat --abbrev-commit
+  mg = merge
+  rb = rebase
+  rbi = rebase -i
+  st = status
+  stat = shortlog -sne --no-merges
+  sts = status -sb
+  unstage = reset HEAD
+  up = update
+[apply]
+  # When applying a patch, detect a new or modified line that has whitespace
+  # errors. 'nowarn' turns off the trailing whitespace warning.
+  #whitespace = nowarn
+[branch]
+  # Tells 'git branch' and 'git checkout' to set up new branches
+  # so that 'git pull' will appropriately merge from the starting point branch.
+  autosetupmerge = always
+  # When a new branch is created with 'git branch' or 'git checkout' that tracks
+  # another branch, this tells git to set up pull to rebase instead of merge.
+  autosetuprebase = always
+[merge]
+  # Allow to omit the “–-no-ff” switch in merge.
+  ff = false
+  # Always show a diffstat at the end of a merge.
+  stat = true
+[push]
+  # Push only the current branch to the upstream branch, but refuse to push
+  # if the upstream branch's name is different from the local one.
+  default = simple
+[diff]
+  # Allow git diff to do basic rename and copy detection.
+  renames = copies
+  # Tell git diff to use mnemonic prefixes (index, work tree, commit, object)
+  # instead of the standard a and b notation.
+  mnemonicprefix = true
+[http]
+  # Disable the  SSL CERT verification.
+  #sslverify = false
+[rerere]
+  # Enable the recording of resolved conflicts, so that
+  # identical hunks can be resolved automatically later on.
+  enabled = true
+  # Update the index with the resulting contents after the conflict
+  # has been cleanly resolved using previously recorded resolution.
+  autoupdate = true
+
