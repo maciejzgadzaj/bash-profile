@@ -367,5 +367,6 @@ let g:airline#extensions#tabline#enabled = 1
 " Show just the filename
 let g:airline#extensions#tabline#fnamemod = ':t'
 
+nmap <F6> :NERDTreeToggle<CR>
 nmap <F7> :TagbarToggle<CR>
 
