@@ -55,6 +55,7 @@ gti () { git status --ignored "$@" ; }
 gs () { git status -sb "$@" ; }
 gsi () { git status -sb --ignored "$@" ; }
 gl () { git l "$@" ; }
+glm () { git lm "$@" ; }
 gll () { git ll "$@" ; }
 glll () { git lll "$@" ; }
 gb () { git blame "$@" ; }

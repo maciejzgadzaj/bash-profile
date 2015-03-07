@@ -35,6 +35,7 @@
   co = checkout
   df = diff
   l = log --color --date=iso --no-merges --pretty=format:'%C(red)%h%C(reset)%x09%C(green)%an%C(reset)%x09%C(bold blue)%cd%C(reset)  %s%C(yellow)%d%C(reset)'
+  lm = log --color --date=iso --pretty=format:'%C(red)%h%C(reset)%x09%C(green)%an%C(reset)%x09%C(bold blue)%cd%C(reset)  %s%C(yellow)%d%C(reset)'
   ll = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%ci) %C(bold blue)<%an>%Creset' --abbrev-commit
   lll = log --stat --abbrev-commit
   mg = merge
