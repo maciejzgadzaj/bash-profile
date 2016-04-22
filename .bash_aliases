@@ -106,3 +106,6 @@ if [ -d ~/.composer/vendor/drupal/coder/coder_sniffer/Drupal ]; then
     alias sniff='phpcs --standard=~/.composer/vendor/drupal/coder/coder_sniffer/Drupal/'
 fi
 
+# OS X specific
+alias updatedb='/usr/libexec/locate.updatedb'
+
