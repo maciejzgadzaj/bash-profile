@@ -1,19 +1,37 @@
-caption always "%{= bb}%{+b w}%n %h %=%t %c"
-hardstatus alwayslastline "%-Lw%{= BW}%50>%n%f* %t%{-}%+Lw%<"
-
-defscrollback 30000 # Use a 30000-line scrollback buffer
-termcapinfo xterm ti@:te@
-
-# terminfo and termcap for nice 256 color terminal
-# allow bold colors - necessary for some reason
-attrcolor b ".I"
-# tell screen how to set colors. AB = background, AF=foreground
-termcapinfo xterm 'Co#256:AB=\E[48;5;%dm:AF=\E[38;5;%dm'
-termcapinfo urxvt 'Co#256:AB=\E[48;5;%dm:AF=\E[38;5;%dm'
-termcapinfo xterm* be
-# erase background with current bg color
-defbce "on"
-
-# Autodetach session on hangup instead of terminating screen completely
+# Autodetach session on hangup instead of terminating screen completely.
 autodetach on
 
+# Use a 30000-line scrollback buffer.
+defscrollback 30000
+
+# Allow bold colors - necessary for some reason.
+attrcolor b ".I"
+
+# Change the xterm initialization string (to avoid window resizing).
+termcapinfo xterm*|rxvt*|kterm*|Eterm* 'is=\E[r\E[m\E[2J\E[H\E[?7h\E[?1;4;6l'
+
+# Tell screen how to set colors. AB = background, AF=foreground.
+termcapinfo xterm*|rxvt*|kterm*|Eterm* 'Co#256:AB=\E[48;5;%dm:AF=\E[38;5;%dm'
+termcapinfo xterm* be
+
+# Enables use of shift-PgUp and shift-PgDn.
+termcapinfo xterm*|rxvt*|kterm*|Eterm* ti@:te@
+
+# Erase background with current bg color.
+defbce "on"
+
+# Enable 256 color term.
+term xterm-256color
+
+# Disable visual bell.
+vbell off
+
+# Very nice tabbed colored hardstatus line.
+hardstatus alwayslastline
+hardstatus string '%{= Kd} %{= Kd}%-w%{= kw} %n %{= kW}%t %{= Kd}%+w %-= %{KG} %H %{Kw}|%{KW} %D %d %M %Y%{= Kc} %c %{-}'
+
+# Hide hardstatus: ctrl-a f.
+bind f eval "hardstatus ignore"
+
+# Show hardstatus: ctrl-a F.
+bind F eval "hardstatus alwayslastline"
