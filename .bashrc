@@ -1,3 +1,5 @@
+
+
 # ~/.bashrc: executed by bash(1) for non-login shells.
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
@@ -152,4 +154,22 @@ export LESS_TERMCAP_se=$'\E[0m'          # end standout-mode
 export LESS_TERMCAP_so=$'\E[01;44;33m'   # begin standout-mode - info box
 export LESS_TERMCAP_ue=$'\E[0m'          # end underline
 export LESS_TERMCAP_us=$'\E[01;32m'      # begin underline
+
+# Include Drush bash customizations.
+if [ -f "/home/mzgadzaj/.drush/drush.bashrc" ] ; then
+  source /home/mzgadzaj/.drush/drush.bashrc
+fi
+
+# Include Drush completion.
+if [ -f "/home/mzgadzaj/.drush/drush.complete.sh" ] ; then
+  source /home/mzgadzaj/.drush/drush.complete.sh
+fi
+
+# Include Drush prompt customizations.
+#if [ -f "/home/mzgadzaj/.drush/drush.prompt.sh" ] ; then
+#  source /home/mzgadzaj/.drush/drush.prompt.sh
+#fi
+
+# Include Drupal Console completion.
+source "$HOME/.console/console.rc" 2>/dev/null
 
