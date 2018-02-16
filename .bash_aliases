@@ -65,8 +65,6 @@ gc () { git commit "$@" ; }
 alias gca="git commit --amend"
 gcm () { git commit -m "$@" ; }
 alias gr='[ ! -z `git rev-parse --show-cdup` ] && cd `git rev-parse --show-cdup || pwd`'
-alias gra='git rebase --abort'
-alias grc='git rebase --continue'
 gri () { git rebase -i HEAD~$@ ; }
 gstat () { git shortlog -sne --no-merges ; }
 gstatm () { git shortlog -sne ; }
